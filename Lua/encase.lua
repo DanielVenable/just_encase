@@ -28,7 +28,6 @@ table.insert(mod_hook_functions.keyboard_input, function(key)
             end
 
             for _, border in ipairs(to_delete) do
-                MF_specialremove(border, 2)
                 delete(border)
             end
         else
@@ -48,7 +47,7 @@ undo_list[ENCASE_MODE_UNDO] = function(id, data)
     is_encase_mode_on = not data[2]
 end
 
-table.insert(mod_hook_functions.turn_end, function()
+table.insert(mod_hook_functions.block, function()
     if is_encase_mode_on then
         for _, you in ipairs(findallfeature(nil, "is", "you")) do
             local unit = mmf.newObject(you)
