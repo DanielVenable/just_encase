@@ -47,3 +47,22 @@ end)
 undo_list[ENCASE_MODE_UNDO] = function(id, data)
     is_encase_mode_on = not data[2]
 end
+
+table.insert(mod_hook_functions.turn_end, function()
+    if is_encase_mode_on then
+        for _, you in ipairs(findallfeature(nil, "is", "you")) do
+            local unit = mmf.newObject(you)
+            create(BORDER_OBJECT, unit.values[XPOS], unit.values[YPOS], unit.values[DIR])
+        end
+        local encased_squares = find_all_encased_squares()
+        if #encased_squares > 0 then
+            -- TODO
+        end
+    end
+end)
+
+function find_all_encased_squares()
+    local borders = unitlists[BORDER_OBJECT]
+    -- TODO
+    return {}
+end
