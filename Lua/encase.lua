@@ -32,24 +32,33 @@ table.insert(mod_hook_functions.level_start, function()
     encased_units = {}
 end)
 
-undo_list[ENCASE_MODE_UNDO] = function(id, data)
+undo_list[ENCASE_MODE_UNDO] = function(_, data)
     is_encase_mode_on = not data[2]
+    encased_ids = data[3]
 end
 
 table.insert(mod_hook_functions.block, function()
+    print(dump(encased_ids))
     if is_encase_mode_on then
-        for _, you in ipairs(findallfeature(nil, "is", "you")) do
-            local unit = mmf.newObject(you)
-            create(BORDER_OBJECT, unit.values[XPOS], unit.values[YPOS], unit.values[DIR])
-        end
         local encased_squares = find_all_encased_squares()
         if #encased_squares > 0 then
+            exit_encase_mode()
+
             for _, square in ipairs(encased_squares) do
                 local here = findallhere(square.x, square.y)
-                
+                if #here > 0 then
+                    local _, id = create(INNER_OBJECT, square.x, square.y, 0)
+                    table.insert(encased_ids, id)
+                end
+                for _, obj in ipairs(here) do
+                    table.insert(encased_ids, mmf.newObject(obj).values[ID])
+                end
             end
-
-            exit_encase_mode()
+        else
+            for _, you in ipairs(findallfeature(nil, "is", "you")) do
+                local unit = mmf.newObject(you)
+                create(BORDER_OBJECT, unit.values[XPOS], unit.values[YPOS], unit.values[DIR])
+            end
         end
     end
 end)
@@ -70,8 +79,11 @@ function find_all_encased_squares()
     local max_x, min_x = 0, 9999
     local max_y, min_y = 0, 9999
     local visited = {}
+    local borders = unitlists[BORDER_OBJECT]
 
-    for _, border in ipairs(unitlists[BORDER_OBJECT]) do
+    if borders == nil then return {} end
+
+    for _, border in ipairs(borders) do
         local unit = mmf.newObject(border)
         local x, y = unit.values[XPOS], unit.values[YPOS]
         max_x = math.max(max_x, x)
@@ -132,21 +144,26 @@ end
 
 function enter_encase_mode()
     is_encase_mode_on = true
-    addundo({ ENCASE_MODE_UNDO, true })
+    delete_all(INNER_OBJECT)
+    addundo({ ENCASE_MODE_UNDO, true, encased_ids })
+    encased_ids = {}
 end
 
 function exit_encase_mode()
     is_encase_mode_on = false
+    delete_all(BORDER_OBJECT)
+    addundo({ ENCASE_MODE_UNDO, false, encased_ids })
+    encased_ids = {}
+end
 
-    -- Deleting mutates the array, so we need to copy it first
+function delete_all(obj_name)
+     -- Deleting mutates the array, so we need to copy it first
     local to_delete = {}
-    for k, v in ipairs(unitlists[BORDER_OBJECT]) do
+    for k, v in ipairs(unitlists[obj_name] or {}) do
         to_delete[k] = v
     end
 
     for _, border in ipairs(to_delete) do
         delete(border)
     end
-    
-    addundo({ ENCASE_MODE_UNDO, false })
 end
