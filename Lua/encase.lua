@@ -38,7 +38,6 @@ undo_list[ENCASE_MODE_UNDO] = function(_, data)
 end
 
 table.insert(mod_hook_functions.block, function()
-    print(dump(encased_ids))
     if is_encase_mode_on then
         local encased_squares = find_all_encased_squares()
         if #encased_squares > 0 then
