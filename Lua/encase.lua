@@ -13,8 +13,8 @@ local BORDER_OBJECT = "line"
 local INNER_OBJECT = "ice"
 
 -- Mutables:
-local encased_ids = {}
 local is_encase_mode_on = false
+encased_ids = {}
 
 local function find_all_encased_squares()
     local function pair(x, y)
@@ -134,7 +134,7 @@ end)
 
 table.insert(mod_hook_functions.level_start, function()
     is_encase_mode_on = false
-    encased_units = {}
+    encased_ids = {}
 end)
 
 undo_list[ENCASE_MODE_UNDO] = function(_, data)
@@ -152,10 +152,10 @@ table.insert(mod_hook_functions.block, function()
                 local here = findallhere(square.x, square.y)
                 if #here > 0 then
                     local _, id = create(INNER_OBJECT, square.x, square.y, 0)
-                    table.insert(encased_ids, id)
+                    encased_ids[id] = true
                 end
                 for _, obj in ipairs(here) do
-                    table.insert(encased_ids, mmf.newObject(obj).values[ID])
+                    encased_ids[mmf.newObject(obj).values[ID]] = true
                 end
             end
         else
