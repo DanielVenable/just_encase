@@ -150,11 +150,25 @@ table.insert(mod_hook_functions.block, function()
 
             for _, square in ipairs(encased_squares) do
                 local here = findallhere(square.x, square.y)
-                if #here > 0 then
+
+                -- Don't encase YOU objects
+                local to_encase = {}
+                for _, obj in ipairs(here) do
+                    local do_encase = true
+                    for _, you in ipairs(findallfeature(nil, "is", "you")) do
+                        if you == obj then
+                            do_encase = false
+                        end
+                    end
+                    if do_encase then
+                        table.insert(to_encase, obj)
+                    end
+                end
+                if #to_encase > 0 then
                     local _, id = create(INNER_OBJECT, square.x, square.y, 0)
                     encased_ids[id] = true
                 end
-                for _, obj in ipairs(here) do
+                for _, obj in ipairs(to_encase) do
                     encased_ids[mmf.newObject(obj).values[ID]] = true
                 end
             end
