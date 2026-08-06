@@ -10,11 +10,6 @@ movement.lua from Patashu's redux mods. Some of it was also written
 by me for this mod specifically.
 
 I based the implementation on the "sticky" prop.
-
-Known limitiations:
- - If an encased object is PULL, it cannot pull the encased group if that would put something where the PULL object used to be.
- - If an encased object is SWAP, swapping it will not move the encased group.
- - Infinite loop occurs when pushing if PUSH object between encased objects.
 ]]
 
 moving_units = {}
