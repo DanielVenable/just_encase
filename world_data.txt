@@ -3,8 +3,9 @@ name=just encase
 author=Daniel
 mods=1
 firstlevel=1level
+start=2level
 
 [levels]
-levelid=1
-rolling_levelid=1
+levelid=4
+rolling_levelid=4
 
