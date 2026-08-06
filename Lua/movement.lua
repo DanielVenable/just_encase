@@ -1579,7 +1579,7 @@ function dopush(unitid,ox,oy,dir,pulling_,x_,y_,reason,pusherid,is_encase)
 							if (pushedunits[pid] == nil) then
 								pushedunits[pid] = 1
 
-								hm = dopush(obs,ox,oy,dir,true,x-ox,y-oy,reason,unitid)
+								hm = dopush(obs,ox,oy,dir,true,x-ox,y-oy,reason,unitid, is_encase)
 							end
 
 							movedata.pull = 1
@@ -1594,7 +1594,7 @@ function dopush(unitid,ox,oy,dir,pulling_,x_,y_,reason,pusherid,is_encase)
 
 							if (pulling == false) or (pulling and (hms[i] ~= pusherid)) and (pushedunits[pid] == nil) then
 								pushedunits[pid] = 1
-								hm = dopush(v,ox,oy,dir,false,x+ox,y+oy,reason,unitid)
+								hm = dopush(v,ox,oy,dir,false,x+ox,y+oy,reason,unitid, is_encase)
 							end
 						end
 					end
@@ -1642,7 +1642,7 @@ function dopush(unitid,ox,oy,dir,pulling_,x_,y_,reason,pusherid,is_encase)
 
                     if (pushedunits[pid] == nil) then
                         pushedunits[pid] = 1
-                        hm = dopush(obs,ox,oy,dir,pulling,x-ox,y-oy,reason,unitid)
+                        hm = dopush(obs,ox,oy,dir,pulling,x-ox,y-oy,reason,unitid, is_encase)
 					end
 				end
 			end
