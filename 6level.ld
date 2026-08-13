@@ -24,6 +24,7 @@ disableruleeffect=0
 disableshake=0
 selectorX=-1
 specials=0
+mapid=factory
 
 [images]
 total=0

@@ -1,11 +1,12 @@
 [general]
-name=just encase
 author=Daniel
+name=just encase
 mods=1
 firstlevel=1level
 start=2level
+prize_max=6
 
 [levels]
-levelid=7
-rolling_levelid=7
+levelid=9
+rolling_levelid=9
 
